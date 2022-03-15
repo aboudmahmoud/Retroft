@@ -21,23 +21,26 @@ ActivityMainBinding binding;
         super.onCreate(savedInstanceState);
         binding=ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        Post post= new Post(5,"Hello Aboud","Walcome to Aboud World");
         Retrofit retrofit = new Retrofit.Builder().baseUrl("https://jsonplaceholder.typicode.com/")
                 .addConverterFactory(GsonConverterFactory.create()).build();
 
         ApiInterFace apiInterFace=retrofit.create(ApiInterFace.class);
 
-        Call<List<Post>> call=apiInterFace.getPost("1");
-
-        call.enqueue(new Callback<List<Post>>() {
+        Call<Post> call=apiInterFace.setPost(post);
+        call.enqueue(new Callback<Post>() {
             @Override
-            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
-                binding.tv.setText(response.body().get(0).getTitle());
+            public void onResponse(Call<Post> call, Response<Post> response) {
+                binding.tv.setText(response.body().getTitle());
             }
 
             @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
+            public void onFailure(Call<Post> call, Throwable t) {
                 binding.tv.setText(t.getMessage());
             }
         });
+
+
+
     }
 }
