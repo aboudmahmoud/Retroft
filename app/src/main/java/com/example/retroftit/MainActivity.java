@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import com.example.retroftit.databinding.ActivityMainBinding;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,16 +26,16 @@ ActivityMainBinding binding;
 
         ApiInterFace apiInterFace=retrofit.create(ApiInterFace.class);
 
-        Call<Post> call=apiInterFace.getPost();
+        Call<List<Post>> call=apiInterFace.getPost("1");
 
-        call.enqueue(new Callback<Post>() {
+        call.enqueue(new Callback<List<Post>>() {
             @Override
-            public void onResponse(Call<Post> call, Response<Post> response) {
-                binding.tv.setText(response.body().getTitle());
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                binding.tv.setText(response.body().get(0).getTitle());
             }
 
             @Override
-            public void onFailure(Call<Post> call, Throwable t) {
+            public void onFailure(Call<List<Post>> call, Throwable t) {
                 binding.tv.setText(t.getMessage());
             }
         });
